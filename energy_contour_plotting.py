@@ -1,7 +1,7 @@
 """
 Energy Contour Plot Generator
 
-This script loads a CSV file containing precomputed values of:
+This script loads the CSV file containing the precomputed values of:
 - Major radius R
 - First Fourier coefficient a0
 - Energy E
@@ -23,7 +23,6 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 
-# Load your dataset
 df = pd.read_csv("fourier_coefficients.csv")  # Replace with your filename if different
 
 # Optional: filter to a specific region
@@ -39,7 +38,6 @@ a0_vals = pivot.index.values
 R_grid, a0_grid = np.meshgrid(R_vals, a0_vals)
 E_grid = pivot.values
 
-# Generate contour plot
 plt.figure(figsize=(8, 6))
 contour = plt.contourf(R_grid, a0_grid, E_grid, levels=50)
 cbar = plt.colorbar(contour)
