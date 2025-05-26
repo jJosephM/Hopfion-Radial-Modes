@@ -1,0 +1,9 @@
+cff-version: 1.2.0
+message: "If you use this code, please cite it as below."
+title: "Hopfion Radial Fourier Modes"
+authors:
+  - family-names: Mankenberg
+    given-names: Jacob
+date-released: 2025-05-14
+version: "1.0.0"
+repository-code: https://github.com/jJosephM/Hopfion-Radial-Modes/
