@@ -8,11 +8,9 @@ This script:
    and the y-axis becomes the horizontal axis (now labeled ρ).
 4. Animates the evolution of the membrane profile with a light blue background.
 
-Input:
-- A DataFrame `trajectory_df` with columns: R, a0, a2, a4, b3, b5
+Input the DataFrame `trajectory_df` with columns: R, a0, a2, a4, b3, b5
 
-Output:
-- An MP4 animation titled "r_theta_parametric_rotated.mp4"
+Outputs the MP4 animation titled "r_theta_parametric_rotated.mp4"...hopefully
 """
 
 import numpy as np
@@ -25,17 +23,16 @@ from matplotlib.animation import FuncAnimation, FFMpegWriter
 ###################################################################################################
 from scipy.interpolate import griddata
 
-# Load the full dataset
 df = pd.read_csv("fourier_refined.csv")
 df = df[df['E'] > 0].copy()
 
-# Required coefficient columns
+#REQUIRED coefficient columns
 coeff_columns = ['a2', 'a4', 'b3', 'b5', 'E']
 base_points = df[['R', 'a0']].values
 
 trajectory_points = np.load("traj_points.npy")
 
-# Interpolate each coefficient at trajectory points
+##nterpolate each coefficient at trajectory points
 interpolated_data = {
     'R': trajectory_points[:, 0],
     'a0': trajectory_points[:, 1],
@@ -45,16 +42,16 @@ for coeff in coeff_columns:
     interpolated_values = griddata(base_points, df[coeff].values, trajectory_points, method='linear')
     interpolated_data[coeff] = interpolated_values
 
-# Create DataFrame
+#create the DataFrame here
 trajectory_df = pd.DataFrame(interpolated_data)
 ###################################################################################################
 
 
 
-# Define θ
+#define θ
 theta = np.linspace(0, 2 * np.pi, 500)
 
-# Generate r(θ) profiles from Fourier coefficients
+#generate r(θ) profiles from Fourier coefficients
 r_profiles = []
 for _, row in trajectory_df.iterrows():
     a0, a2, a4 = row['a0'], row['a2'], row['a4']
@@ -74,7 +71,7 @@ z_profiles = x_profiles
 rho_profiles = y_profiles
 print(rho_profiles)
 
-# Set up plot
+#set up that damn plot
 # fig, ax = plt.subplots(figsize=(5, 5))
 # fig.patch.set_facecolor('#e6f2ff')  # light blue background
 # ax.set_facecolor('#e6f2ff')
@@ -88,17 +85,14 @@ print(rho_profiles)
 # ax.set_ylabel(r'$z$', fontsize=14)
 # ax.set_title('Membrane Cross-Section (Rotated)', fontsize=14)
 
-# # Update function
 # def update(frame):
 #     line.set_data(rho_profiles[frame], z_profiles[frame])
 #     # ax.set_title(f'Step {frame + 1}', fontsize=12)
 #     return line,
 
-# # Animate
+#animate hopefully
 # ani = FuncAnimation(fig, update, frames=len(rho_profiles), blit=True)
 # plt.close()
-
-# # Save animation
 # output_file = "r_theta_parametric_rotated.mp4"
 # ani.save(output_file, writer=FFMpegWriter(fps=25, bitrate=3600))
 # print(f"Animation saved to {output_file}")
